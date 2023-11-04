@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "@emotion/styled";
 import { DefaultHeader } from "@components/common/DefaultHeader";
 import PartyInfo from "@components/partydetail/PartyInfo";
@@ -43,7 +42,7 @@ const BackGroundImgContainer = styled.div<{ scrollY: number }>`
   transform: ${({ scrollY }) => `translateY(${scrollY * 0.4}px)`};
 `;
 
-const initailPartyDetailData = {
+const initialPartyDetailData = {
   position: {
     coords: {
       x: 33.5563,
@@ -71,8 +70,8 @@ const PartyDetail = () => {
   const { y } = useScroll(scrollRef);
 
   const router = useRouter();
-  const { id } = router.query;
-  const { isLoading, isError, error, data } = usePartyDetailQuery(id as string);
+  const { id } = router.query as { id: string };
+  const { isLoading, isError, error, data } = usePartyDetailQuery({ id });
 
   const participateParty = () => {
     // 백엔드 확정후 추가
@@ -86,10 +85,11 @@ const PartyDetail = () => {
           src="/images/profile/profilebackground.jpg"
           layout="fill"
           objectFit="cover"
+          alt="프로필배경이미지"
         />
       </BackGroundImgContainer>
-      <PartyInfo {...initailPartyDetailData.description} />
-      <PartyMap {...initailPartyDetailData.position} />
+      <PartyInfo {...initialPartyDetailData.description} />
+      <PartyMap {...initialPartyDetailData.position} />
       <ButtonContainer>
         <DefaultButton
           text={"참가신청"}
