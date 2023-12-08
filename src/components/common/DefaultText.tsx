@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
-import { CSSProperties, useMemo } from 'react';
-import { ColorToken } from 'styles/Color';
+import styled from "@emotion/styled";
+import { CSSProperties, useMemo } from "react";
+import { ColorToken } from "styles/Color";
 
 const TextContainer = styled.div``;
 
@@ -9,7 +9,7 @@ export interface TextProps {
   fontFamily?: string;
   size?: number; // default = 10
   weight?: number; // default = 400
-  align?: 'left' | 'center' | 'right'; // default = left
+  align?: "left" | "center" | "right"; // default = left
   color?: string; // default = 'black'
   style?: CSSProperties;
   ellipsis?: boolean; // default = true
@@ -21,7 +21,7 @@ export interface TextProps {
 export const DefaultText = ({
   size = 10,
   text,
-  fontFamily = 'Google Sans',
+  fontFamily = "Google Sans",
   weight = 400,
   lineHeight,
   color = ColorToken.text_primary,
@@ -45,7 +45,7 @@ export const DefaultText = ({
 
   const textAlign = useMemo(() => {
     if (align) return align;
-    else return 'left';
+    else return "left";
   }, [align]);
 
   const textColor = useMemo(() => {
@@ -55,10 +55,10 @@ export const DefaultText = ({
   const firstLineStyles = useMemo(() => {
     if (preLine) {
       return {
-        whiteSpace: 'pre-line' as const,
-        wordBreak: 'break-all' as const,
-        '&::firstLine': {
-          fontWeight: 'bold' as const,
+        whiteSpace: "pre-line" as const,
+        wordBreak: "break-all" as const,
+        "&::firstLine": {
+          fontWeight: "bold" as const,
         },
       };
     }
@@ -73,19 +73,19 @@ export const DefaultText = ({
         fontWeight,
         fontFamily,
         textAlign,
-        letterSpacing: '-0.2px',
+        letterSpacing: "-0.2px",
         color: textColor,
         ...style,
         ...(ellipsis !== false && {
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
         }),
         ...firstLineStyles,
       }}
       onClick={onClick}
     >
-      {text || ''}
+      {text || ""}
     </TextContainer>
   );
 };

@@ -1,109 +1,85 @@
-import React from "react";
 import styled from "@emotion/styled";
-import LocationIcon from "@components/icons/profile/Location.icon";
-import GenderIcon from "@components/icons/profile/Gender.icon";
-import InfoIcon from "@components/icons/profile/Info.icon";
-import { useRouter } from "next/router";
-import { DefaultText } from "@components/common/DefaultText";
 import { Color } from "styles/Color";
+import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
+import PartyMap from "./PartyMap";
+import PartyBrief from "./PartyBrief";
+import PartyDetail from "./PartyDetail";
+import PartyHostInfo from "./PartyHostInfo";
 
-interface DescriptionDataType {
-  partyTitle: string;
-  partyContent: string;
-  status: string;
-  gender: string;
-  age: string;
-  deadline: string;
-  partyTime: string;
-  totalParticipate: number;
-  participate: number;
-  thumbnail: string;
-  address: string;
+interface PartyInfoProps {
+  data: PartyDetailResponse;
 }
-//스키마 확정후 변경예정
 
 const Container = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  padding-bottom: 20px;
-  background-color: white;
+  align-items: center;
+  padding-bottom: 80px;
+  background-color: ${Color.LightGrey};
+  z-index: 99999;
 `;
 
-const PartyDetailContainer = styled.div`
+const PartyInfoContainer = styled.div`
   display: flex;
+  padding: 16px 0;
+  min-width: 600px;
   flex-direction: column;
-  align-items: center;
   gap: 16px;
-  padding: 20px 0;
-  z-index: 99;
-  background-color: white;
+  padding-bottom: 20px;
+  background-color: ${Color.LightGrey};
 `;
 
-const PartyTitle = styled.div`
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  z-index: 99;
-  gap: 10px;
-`;
-
-const PartyDetail = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 20px;
-  color: #919191;
-`;
-const PartyExplain = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 16px;
-  font-size: 20px;
-  color: #919191;
-`;
-
-const PartyInfo = (description: DescriptionDataType) => {
+const PartyInfo = ({ data }: PartyInfoProps) => {
   const {
     partyTitle,
     partyContent,
-    status,
     gender,
     age,
     deadline,
     partyTime,
     totalParticipate,
     participate,
-    thumbnail,
+    menu,
+    hit,
     address,
-  } = description;
+    longitude,
+    latitude,
+  } = data;
 
-  const router = useRouter();
+  const partyBriefData = {
+    partyTitle,
+    hit,
+    totalParticipate,
+    participate,
+    gender,
+    age,
+  };
+
+  const partyDetailData = {
+    deadline,
+    partyTime,
+    menu,
+    partyContent,
+  };
+
+  const partyMapData = {
+    address,
+    longitude,
+    latitude,
+  };
 
   return (
     <Container>
-      <PartyDetailContainer>
-        <PartyTitle>
-          <DefaultText text={partyTitle} size={24} />
-          <DefaultText text={partyTime} size={16} />
-        </PartyTitle>
-        <PartyDetail>
-          <LocationIcon />
-          <DefaultText text={address} size={16} />
-          <GenderIcon />
-          <DefaultText text={gender} size={16} />
-          <InfoIcon />
-          <DefaultText text={age} size={16} />
-        </PartyDetail>
-        <PartyExplain>
-          <DefaultText text={partyContent} size={16} color={Color.DarkGrey} />
-        </PartyExplain>
-      </PartyDetailContainer>
+      <PartyInfoContainer>
+        {false && (
+          //방장여부분기
+          <PartyHostInfo />
+        )}
+        <PartyBrief {...partyBriefData} />
+        <PartyDetail {...partyDetailData} />
+        <PartyMap {...partyMapData} />
+      </PartyInfoContainer>
     </Container>
   );
 };

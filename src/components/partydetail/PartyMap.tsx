@@ -1,33 +1,37 @@
 import styled from "@emotion/styled";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-interface PositionDataType {
-  coords: {
-    x: number;
-    y: number;
-  };
-  address?: string;
+import { DefaultText } from "@components/common/DefaultText";
+
+interface PartyMapProps {
+  address: string;
+  longitude: number;
+  latitude: number;
 }
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 24px;
+  gap: 16px;
   justify-content: center;
-  align-items: center;
   z-index: 8;
+  background-color: white;
+  border-radius: 12px;
 `;
 
-const PartyMap = (position: PositionDataType) => {
+const PartyMap = (data: PartyMapProps) => {
+  const { address, longitude, latitude } = data;
   return (
     <Container>
+      <DefaultText text={"모임위치"} size={20} weight={600} />
       <Map
-        center={{ lat: position.coords.x, lng: position.coords.y }}
+        center={{ lat: latitude, lng: longitude }}
         style={{ width: "100%", height: "400px", borderRadius: "20px" }}
       >
-        <MapMarker
-          position={{ lat: position.coords.x, lng: position.coords.y }}
-        />
+        <MapMarker position={{ lat: latitude, lng: longitude }} />
       </Map>
+      <DefaultText text={address} size={16} />
     </Container>
   );
 };

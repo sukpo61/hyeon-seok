@@ -7,7 +7,7 @@ import ProfileInfo from "@components/profile/ProfileInfo";
 import { useScroll } from "react-use";
 import { useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import BackgroundImage from "@components/common/BackgroundImage";
 
 const Container = styled.div`
   display: flex;
@@ -28,16 +28,6 @@ const RightAreaContainer = styled.div`
   cursor: pointer;
 `;
 
-const BackGroundImgContainer = styled.div<{ scrollY: number }>`
-  display: flex;
-  width: 100%;
-  min-height: 200px;
-  justify-content: center;
-  align-items: center;
-  z-index: 8;
-  transform: ${({ scrollY }) => `translateY(${scrollY * 0.4}px)`};
-`;
-
 const RightArea = () => {
   return (
     <Link href={"/setting"}>
@@ -56,16 +46,10 @@ const Profile = () => {
         leftArea={<HeaderBackButton />}
         rightArea={<RightArea />}
       />
-      <BackGroundImgContainer scrollY={y}>
-        <Image
-          src="/images/profile/profilebackground.jpg"
-          fill
-          style={{
-            objectFit: "cover",
-          }}
-          alt={"profile-background"}
-        />
-      </BackGroundImgContainer>
+      <BackgroundImage
+        scrollY={y}
+        src="/images/profile/profilebackground.jpg"
+      />
       <ProfileInfo />
       <ProfileTab />
     </Container>
