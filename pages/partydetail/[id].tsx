@@ -4,7 +4,6 @@ import { HeaderBackButton } from "@components/common/HeaderBackButton";
 import { useScroll } from "react-use";
 import { useRef } from "react";
 import PartyDetailContent from "@components/partydetail/PartyDetailContent";
-import { useRouter } from "next/router";
 
 const Container = styled.div`
   display: flex;
