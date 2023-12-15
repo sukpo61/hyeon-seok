@@ -8,13 +8,13 @@ interface postPartyParticipationParameter {
   };
 }
 
-export const API_POST_PARTY_PARTICIPATION_KEY = "/api/party";
+export const API_POST_PARTY_PARTICIPATION_KEY = "/api/party/participation";
 
-const postPartyParticipation = async ({ body }: any) => {
+const postParticipate = async (body: any) => {
   return defaultRequest
     .post(API_POST_PARTY_PARTICIPATION_KEY, body)
     .then((response) => {
-      console.log("Response:", response);
+      console.log("postParticipate:", response);
       return response;
     })
     .catch((error) => {
@@ -22,4 +22,4 @@ const postPartyParticipation = async ({ body }: any) => {
     });
 };
 
-export default postPartyParticipation;
+export default postParticipate;

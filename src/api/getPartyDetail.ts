@@ -14,6 +14,8 @@ const getPartyDetail = async ({
   const { data } = await defaultRequest.get(
     variableAssignMent(API_GET_PARTY_DETAIL_KEY, { id })
   );
+  console.log("data", data);
+
   return data;
 };
 

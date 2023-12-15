@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { DefaultButton } from "@components/common/DefaultButton";
 import { useMutation } from "@tanstack/react-query";
-import postPartyParticipation from "src/api/postPartyParticipation";
+import postParticipate from "src/api/postParticipate";
 import DeleteIcon from "@components/icons/common/Delete.icon";
 import EditIcon from "@components/icons/common/Edit.icon";
 import { DefaultModalContainer } from "@components/common/DefaultModalContainer";
@@ -64,7 +64,7 @@ const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutateAsync: participateParty } = useMutation({
-    mutationFn: postPartyParticipation,
+    mutationFn: postParticipate,
   });
 
   const onClickParticipateHandler = () => {
