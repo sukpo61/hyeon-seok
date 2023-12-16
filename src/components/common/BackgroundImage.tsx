@@ -18,8 +18,7 @@ const Container = styled.div<BackgroundImageProps>`
   transform: ${({ scrollY }) => `translateY(${scrollY * 0.4}px)`};
 `;
 
-const DEFAULT_BACKGROUND_IMAGE =
-  "https://cdn.pixabay.com/photo/2016/11/18/14/05/brick-wall-1834784_1280.jpg";
+const DEFAULT_BACKGROUND_IMAGE = "/images/common/defaultBackgroundImage.jpg";
 
 const BackgroundImage = ({
   scrollY,
@@ -29,9 +28,11 @@ const BackgroundImage = ({
   return (
     <Container scrollY={scrollY} height={height}>
       <Image
-        src={src ? src : DEFAULT_BACKGROUND_IMAGE}
-        layout="fill"
-        objectFit="cover"
+        src={src ?? DEFAULT_BACKGROUND_IMAGE}
+        fill={true}
+        style={{
+          objectFit: "cover",
+        }}
         alt="배경이미지"
       />
     </Container>

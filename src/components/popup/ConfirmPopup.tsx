@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
 import { Dispatch, SetStateAction } from "react";
-import { useMutation } from "@tanstack/react-query";
-import deletePartyDetail from "src/api/deletePartyDetail";
 import { DefaultButton } from "@components/common/DefaultButton";
 
-interface PartyDeleteConfirmPopupProps {
+interface ConfirmPopupProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  id: string;
+  onConfirm: () => void;
+  description: string;
 }
 
 const Container = styled.div`
@@ -40,16 +39,14 @@ const ButtonContainer = styled.div`
   border-radius: 12px;
 `;
 
-const PartyDeleteConfirmPopup = ({
+const ConfirmPopup = ({
   setIsOpen,
-  id,
-}: PartyDeleteConfirmPopupProps) => {
-  const { mutateAsync: partyDetailDelete } = useMutation({
-    mutationFn: deletePartyDetail,
-  });
-
-  const onClickDeleteHandler = () => {
-    partyDetailDelete({ id });
+  description,
+  onConfirm,
+}: ConfirmPopupProps) => {
+  const onClickConfirmHandler = () => {
+    setIsOpen(false);
+    onConfirm();
   };
 
   const onClickCloseHandler = () => {
@@ -59,11 +56,11 @@ const PartyDeleteConfirmPopup = ({
   return (
     <Container>
       <PartyDetailContainer>
-        <PopUpDescription>정말 삭제하시겠습니까?</PopUpDescription>
+        <PopUpDescription>{description}</PopUpDescription>
         <ButtonContainer>
           <DefaultButton
-            text="삭제"
-            onClick={onClickDeleteHandler}
+            text="확인"
+            onClick={onClickConfirmHandler}
             style={{
               width: "100px",
             }}
@@ -82,4 +79,4 @@ const PartyDeleteConfirmPopup = ({
   );
 };
 
-export default PartyDeleteConfirmPopup;
+export default ConfirmPopup;

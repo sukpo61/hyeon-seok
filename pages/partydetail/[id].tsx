@@ -11,6 +11,11 @@ import getPartyDetail, {
 } from "src/api/getPartyDetail";
 import BackgroundImage from "@components/common/BackgroundImage";
 import PartyDetailBottomBar from "@components/partydetail/PartyDetailBottomBar";
+import postParticipate from "src/api/postParticipate";
+import { useMutation } from "@tanstack/react-query";
+import deletePartyDetail from "src/api/deletePartyDetail";
+import Loading from "@components/partydetail/Loading";
+import ErrorPage from "@components/partydetail/ErrorPage";
 
 const Container = styled.div`
   display: flex;
@@ -23,28 +28,69 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-const PartyDetail = () => {
-  const scrollRef = useRef(null);
+const PartyDetailContent = ({ y }: { y: number }) => {
   const router = useRouter();
-
-  const { y } = useScroll(scrollRef);
   const { id } = router.query as { id: string };
 
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isError, error, isLoading } = useQuery({
     queryKey: [API_GET_PARTY_DETAIL_KEY, { id }],
     queryFn: () => getPartyDetail({ id }),
+    enabled: !!id,
   });
+
+  const { mutateAsync: postParticipateMutate } = useMutation({
+    mutationFn: postParticipate,
+  });
+
+  const { mutateAsync: partyDetailDeleteMutate } = useMutation({
+    mutationFn: deletePartyDetail,
+    onSuccess: () => {
+      router.push("/");
+    },
+  });
+
+  const participateParty = () => {
+    postParticipateMutate({
+      partyId: parseInt(id),
+      leaderId: data?.userId,
+      status: "ACCEPT",
+    });
+  };
+
+  const partyDetailDelete = () => {
+    partyDetailDeleteMutate({ id });
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <ErrorPage error={error} />;
+  }
+
+  if (isSuccess) {
+    return (
+      <>
+        <BackgroundImage src={data.thumbnail} scrollY={y} />
+        <PartyInfo data={data} />
+        <PartyDetailBottomBar
+          participateParty={participateParty}
+          partyDetailDelete={partyDetailDelete}
+        />
+      </>
+    );
+  }
+};
+
+const PartyDetail = () => {
+  const scrollRef = useRef(null);
+  const { y } = useScroll(scrollRef);
 
   return (
     <Container ref={scrollRef}>
       <DefaultHeader leftArea={<HeaderBackButton />} />
-      {isSuccess && (
-        <>
-          <BackgroundImage src={data.thumbnail} scrollY={y} />
-          <PartyInfo data={data} />
-          <PartyDetailBottomBar id={id} />
-        </>
-      )}
+      <PartyDetailContent y={y} />
     </Container>
   );
 };

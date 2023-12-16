@@ -1,16 +1,15 @@
 import styled from "@emotion/styled";
 import { DefaultButton } from "@components/common/DefaultButton";
-import { useMutation } from "@tanstack/react-query";
-import postPartyParticipation from "src/api/postPartyParticipation";
 import DeleteIcon from "@components/icons/common/Delete.icon";
 import EditIcon from "@components/icons/common/Edit.icon";
 import { DefaultModalContainer } from "@components/common/DefaultModalContainer";
 import { Transition } from "@mantine/core";
 import { useState } from "react";
-import PartyDeleteConfirmPopup from "./PartyDeleteConfirmPopup";
+import ConfirmPopup from "../popup/ConfirmPopup";
 
 interface PartyDetailBottomBarProps {
-  id: string;
+  participateParty: () => void;
+  partyDetailDelete: () => void;
 }
 
 const Container = styled.div`
@@ -60,22 +59,11 @@ const HostPannelContainer = styled.div`
   justify-content: right;
 `;
 
-const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
+const PartyDetailBottomBar = ({
+  participateParty,
+  partyDetailDelete,
+}: PartyDetailBottomBarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { mutateAsync: participateParty } = useMutation({
-    mutationFn: postPartyParticipation,
-  });
-
-  const onClickParticipateHandler = () => {
-    participateParty({
-      body: {
-        partyId: parseInt(id),
-        leaderId: 14,
-        status: "ACCEPT",
-      },
-    });
-  };
 
   const onClickDeleteHandler = () => {
     setIsOpen(true);
@@ -102,7 +90,7 @@ const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
           <ParcitipateButtonContainer>
             <DefaultButton
               text={"참가신청"}
-              onClick={onClickParticipateHandler}
+              onClick={participateParty}
               style={{
                 width: "60%",
               }}
@@ -118,7 +106,11 @@ const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
       >
         {(styles) => (
           <DefaultModalContainer style={styles}>
-            <PartyDeleteConfirmPopup id={id} setIsOpen={setIsOpen} />
+            <ConfirmPopup
+              setIsOpen={setIsOpen}
+              description="정말로 삭제하시겠습니까?"
+              onConfirm={partyDetailDelete}
+            />
           </DefaultModalContainer>
         )}
       </Transition>

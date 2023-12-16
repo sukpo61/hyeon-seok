@@ -107,13 +107,13 @@ const PartyBrief = (data: PartyBriefProps) => {
       <Divider />
       <PartyConditionContainer>
         {PartyBriefData.map(({ icon, content }, index) => (
-          <>
+          <div key={content}>
             {index !== 0 && <Divider orientation="vertical" />}
             <PartyConditionBox>
               {icon}
               <DefaultText text={content} size={16} />
             </PartyConditionBox>
-          </>
+          </div>
         ))}
       </PartyConditionContainer>
     </Container>

@@ -17,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   padding-bottom: 80px;
   background-color: ${Color.LightGrey};
-  z-index: 99999;
+  z-index: 99;
 `;
 
 const PartyInfoContainer = styled.div`
