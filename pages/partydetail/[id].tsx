@@ -42,7 +42,7 @@ const PartyDetail = () => {
         <>
           <BackgroundImage src={data.thumbnail} scrollY={y} />
           <PartyInfo data={data} />
-          <PartyDetailBottomBar id={id} />
+          <PartyDetailBottomBar id={id} userId={data.userId} />
         </>
       )}
     </Container>

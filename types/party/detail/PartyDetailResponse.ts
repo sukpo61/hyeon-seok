@@ -1,4 +1,5 @@
 export interface PartyDetailResponse {
+  userId: number;
   partyId: number;
   partyTitle: string;
   partyContent: string;

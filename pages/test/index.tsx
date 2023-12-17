@@ -70,7 +70,7 @@ const Profile = () => {
             text="postCreatePartyMutate"
             onClick={() => {
               postCreatePartyMutate({
-                title: "테스트3",
+                title: "유저1",
                 content: "붕어빵은 팥이 근본입니다.",
                 partyTime: "2023-12-14T23:59:26.125Z",
                 totalParticipant: 4,
@@ -110,30 +110,73 @@ const Profile = () => {
             }}
           />
           <DefaultButton
-            text="getPartyStatusMutate(GUEST)"
+            text="getPartyStatusMutate(GUEST1)"
             onClick={() => {
               getPartyStatusMutate({ id: 12, role: "GUEST" });
             }}
           />
           <DefaultButton
-            text="getPartyStatusMutate(USER)"
+            text="getPartyStatusMutate(USER1)"
             onClick={() => {
               getPartyStatusMutate({ id: 12, role: "USER" });
             }}
           />
           <DefaultButton
-            text="getPartyStatusMutate(VOLUNTEER)"
+            text="getPartyStatusMutate(VOLUNTEER1)"
             onClick={() => {
               getPartyStatusMutate({ id: 12, role: "VOLUNTEER" });
             }}
           />
           <DefaultButton
-            text="getPartyStatusMutate(HOST)"
+            text="getPartyStatusMutate(HOST1)"
             onClick={() => {
               getPartyStatusMutate({ id: 12, role: "HOST" });
             }}
           />
+          <DefaultButton
+            text="getPartyStatusMutate(GUEST2)"
+            onClick={() => {
+              getPartyStatusMutate({ id: 13, role: "GUEST" });
+            }}
+          />
+          <DefaultButton
+            text="getPartyStatusMutate(USER2)"
+            onClick={() => {
+              getPartyStatusMutate({ id: 13, role: "USER" });
+            }}
+          />
+          <DefaultButton
+            text="getPartyStatusMutate(VOLUNTEER2)"
+            onClick={() => {
+              getPartyStatusMutate({ id: 13, role: "VOLUNTEER" });
+            }}
+          />
+          <DefaultButton
+            text="getPartyStatusMutate(HOST2)"
+            onClick={() => {
+              getPartyStatusMutate({ id: 13, role: "HOST" });
+            }}
+          />{" "}
+          <DefaultButton
+            text="getPartyStatusMutate(RECRUIT)"
+            onClick={() => {
+              getPartyStatusMutate({ status: "RECRUIT" });
+            }}
+          />{" "}
+          <DefaultButton
+            text="getPartyStatusMutate(PARTICIPATE)"
+            onClick={() => {
+              getPartyStatusMutate({ status: "PARTICIPATE" });
+            }}
+          />{" "}
+          <DefaultButton
+            text="getPartyStatusMutate(FINISH)"
+            onClick={() => {
+              getPartyStatusMutate({ status: "FINISH" });
+            }}
+          />{" "}
           {/* GUEST, USER, VOLUNTEER, HOST */}
+          {/* [RECRUIT, PARTICIPATE, FINISH] */}
           <DefaultButton
             text="postParticipateMutate"
             onClick={() => {

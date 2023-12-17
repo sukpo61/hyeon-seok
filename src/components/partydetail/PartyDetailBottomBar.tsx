@@ -11,6 +11,7 @@ import PartyDeleteConfirmPopup from "./PartyDeleteConfirmPopup";
 
 interface PartyDetailBottomBarProps {
   id: string;
+  userId: number;
 }
 
 const Container = styled.div`
@@ -60,7 +61,7 @@ const HostPannelContainer = styled.div`
   justify-content: right;
 `;
 
-const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
+const PartyDetailBottomBar = ({ id, userId }: PartyDetailBottomBarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutateAsync: participateParty } = useMutation({
@@ -69,21 +70,9 @@ const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
 
   const onClickParticipateHandler = () => {
     participateParty({
-      body: {
-        title: "붕어빵 먹을 사람",
-        content: "붕어빵은 팥이 근본입니다.",
-        partyTime: "2023-12-09T16:03:23.213Z",
-        deadline: "2023-12-09T16:03:23.213Z",
-        totalParticipant: 4,
-        longitude: 126.88453591058602,
-        latitude: 37.53645109566274,
-        gender: "ALL",
-        category: "한식",
-        age: "2030",
-        menu: "붕어빵",
-        thumbnail:
-          " https://matitting.s3.ap-northeast-2.amazonaws.com/korean.jpeg",
-      },
+      partyId: parseInt(id),
+      leaderId: userId,
+      status: "ACCEPT",
     });
   };
 
@@ -98,9 +87,16 @@ const PartyDetailBottomBar = ({ id }: PartyDetailBottomBarProps) => {
   return (
     <Container>
       <BottomBarContainer>
-        {false ? (
+        {true ? (
           // 방장여부분기
           <HostPannelContainer>
+            <DefaultButton
+              text={"참가신청"}
+              onClick={onClickParticipateHandler}
+              style={{
+                width: "60%",
+              }}
+            />
             <IconContainer onClick={onClickDeleteHandler}>
               <DeleteIcon />
             </IconContainer>
