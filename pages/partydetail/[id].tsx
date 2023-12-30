@@ -11,6 +11,7 @@ import getPartyDetail, {
 } from "src/api/getPartyDetail";
 import BackgroundImage from "@components/common/BackgroundImage";
 import PartyDetailBottomBar from "@components/partydetail/PartyDetailBottomBar";
+import { useEffect } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -34,6 +35,10 @@ const PartyDetail = () => {
     queryKey: [API_GET_PARTY_DETAIL_KEY, { id }],
     queryFn: () => getPartyDetail({ id }),
   });
+
+  useEffect(() => {
+    console.log("data", data);
+  }, []);
 
   return (
     <Container ref={scrollRef}>

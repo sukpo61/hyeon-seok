@@ -70,9 +70,9 @@ const Profile = () => {
             text="postCreatePartyMutate"
             onClick={() => {
               postCreatePartyMutate({
-                title: "유저1",
+                title: "붕어빵 먹을 사람",
                 content: "붕어빵은 팥이 근본입니다.",
-                partyTime: "2023-12-14T23:59:26.125Z",
+                partyTime: "2023-12-30T12:07:55.906Z",
                 totalParticipant: 4,
                 longitude: 126.88453591058602,
                 latitude: 37.53645109566274,
