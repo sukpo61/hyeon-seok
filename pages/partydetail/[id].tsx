@@ -19,7 +19,6 @@ const Container = styled.div`
 const PartyDetail = () => {
   const scrollRef = useRef(null);
   const { y } = useScroll(scrollRef);
-
   return (
     <Container ref={scrollRef}>
       <DefaultHeader leftArea={<HeaderBackButton />} />
