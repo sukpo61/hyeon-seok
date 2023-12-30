@@ -1,6 +1,7 @@
 export interface PartyDetailResponse {
   userId: number;
   partyId: number;
+  isLeader: boolean;
   partyTitle: string;
   partyContent: string;
   address: string;

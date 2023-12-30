@@ -34,6 +34,7 @@ const PartyInfo = ({ data }: PartyInfoProps) => {
   const {
     partyTitle,
     partyContent,
+    isLeader,
     gender,
     age,
     deadline,
@@ -72,10 +73,7 @@ const PartyInfo = ({ data }: PartyInfoProps) => {
   return (
     <Container>
       <PartyInfoContainer>
-        {false && (
-          //방장여부분기
-          <PartyHostInfo />
-        )}
+        {isLeader && <PartyHostInfo />}
         <PartyBrief {...partyBriefData} />
         <PartyDetail {...partyDetailData} />
         <PartyMap {...partyMapData} />

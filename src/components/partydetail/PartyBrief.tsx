@@ -5,6 +5,7 @@ import Divider from "@mui/material/Divider";
 import PersonIcon from "@components/icons/profile/Person.icon";
 import InfoIcon from "@components/icons/profile/Info.icon";
 import GenderIcon from "@components/icons/profile/Gender.icon";
+import { Fragment } from "react";
 
 interface PartyBriefProps {
   partyTitle: string;
@@ -82,14 +83,17 @@ const PartyBrief = (data: PartyBriefProps) => {
 
   const PartyBriefData = [
     {
+      id: "participant_count",
       icon: <PersonIcon />,
       content: `${participate.toString()}/${totalParticipate.toString()}명`,
     },
     {
+      id: "gender_data",
       icon: <GenderIcon />,
       content: genderDataConvert(gender),
     },
     {
+      id: "age_data",
       icon: <InfoIcon />,
       content: ageDataConvert(age),
     },
@@ -106,14 +110,14 @@ const PartyBrief = (data: PartyBriefProps) => {
       </PartyTitle>
       <Divider />
       <PartyConditionContainer>
-        {PartyBriefData.map(({ icon, content }, index) => (
-          <div key={content}>
+        {PartyBriefData.map(({ id, icon, content }, index) => (
+          <Fragment key={id}>
             {index !== 0 && <Divider orientation="vertical" />}
             <PartyConditionBox>
               {icon}
               <DefaultText text={content} size={16} />
             </PartyConditionBox>
-          </div>
+          </Fragment>
         ))}
       </PartyConditionContainer>
     </Container>

@@ -1,15 +1,17 @@
 import styled from "@emotion/styled";
-import { DefaultButton } from "@components/common/DefaultButton";
 import DeleteIcon from "@components/icons/common/Delete.icon";
 import EditIcon from "@components/icons/common/Edit.icon";
+import { DefaultButton } from "@components/common/DefaultButton";
 import { DefaultModalContainer } from "@components/common/DefaultModalContainer";
 import { Transition } from "@mantine/core";
 import { useState } from "react";
+import { MouseEventHandler } from "react";
 import ConfirmPopup from "../popup/ConfirmPopup";
 
 interface PartyDetailBottomBarProps {
-  participateParty: () => void;
-  partyDetailDelete: () => void;
+  participateParty: MouseEventHandler;
+  partyDetailDelete: MouseEventHandler;
+  isLeader: boolean;
 }
 
 const Container = styled.div`
@@ -62,11 +64,16 @@ const HostPannelContainer = styled.div`
 const PartyDetailBottomBar = ({
   participateParty,
   partyDetailDelete,
+  isLeader,
 }: PartyDetailBottomBarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onClickDeleteHandler = () => {
+  const OpenConfirmPopup = () => {
     setIsOpen(true);
+  };
+
+  const CloseConfirmPopup = () => {
+    setIsOpen(false);
   };
 
   const onClickEditHandler = () => {
@@ -76,10 +83,9 @@ const PartyDetailBottomBar = ({
   return (
     <Container>
       <BottomBarContainer>
-        {false ? (
-          // 방장여부분기
+        {isLeader ? (
           <HostPannelContainer>
-            <IconContainer onClick={onClickDeleteHandler}>
+            <IconContainer onClick={OpenConfirmPopup}>
               <DeleteIcon />
             </IconContainer>
             <IconContainer onClick={onClickEditHandler}>
@@ -107,9 +113,9 @@ const PartyDetailBottomBar = ({
         {(styles) => (
           <DefaultModalContainer style={styles}>
             <ConfirmPopup
-              setIsOpen={setIsOpen}
+              CanclePopup={CloseConfirmPopup}
+              ConfirmPopup={partyDetailDelete}
               description="정말로 삭제하시겠습니까?"
-              onConfirm={partyDetailDelete}
             />
           </DefaultModalContainer>
         )}

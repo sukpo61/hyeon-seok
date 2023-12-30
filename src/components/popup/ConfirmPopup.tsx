@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import { Dispatch, SetStateAction } from "react";
+import { MouseEventHandler } from "react";
 import { DefaultButton } from "@components/common/DefaultButton";
 
 interface ConfirmPopupProps {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  onConfirm: () => void;
+  CanclePopup: MouseEventHandler;
+  ConfirmPopup: MouseEventHandler;
   description: string;
 }
 
@@ -40,19 +40,10 @@ const ButtonContainer = styled.div`
 `;
 
 const ConfirmPopup = ({
-  setIsOpen,
+  CanclePopup,
+  ConfirmPopup,
   description,
-  onConfirm,
 }: ConfirmPopupProps) => {
-  const onClickConfirmHandler = () => {
-    setIsOpen(false);
-    onConfirm();
-  };
-
-  const onClickCloseHandler = () => {
-    setIsOpen(false);
-  };
-
   return (
     <Container>
       <PartyDetailContainer>
@@ -60,14 +51,14 @@ const ConfirmPopup = ({
         <ButtonContainer>
           <DefaultButton
             text="확인"
-            onClick={onClickConfirmHandler}
+            onClick={ConfirmPopup}
             style={{
               width: "100px",
             }}
           />
           <DefaultButton
             text="취소"
-            onClick={onClickCloseHandler}
+            onClick={CanclePopup}
             buttonType="secondary"
             style={{
               width: "100px",
