@@ -3,15 +3,16 @@ import { DefaultText } from "@components/common/DefaultText";
 import { HeaderBackButton } from "@components/common/HeaderBackButton";
 import { MapCurrentPositionIcon } from "@components/icons/map/MapCurrentPositon.icon";
 import styled from "@emotion/styled";
+import { useGpsPosition } from "@hooks/useGpsPosition";
 import { Divider } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import { useDebounce } from "react-use";
 import { useRecoilState } from "recoil";
-import getLocationAddress from "src/api/getLocationAddress";
-import getLocationWithKeyword from "src/api/getLocationWithKeyword";
+import getLocationAddress, {
+  API_GET_LOCATION_ADDRESS_KEY,
+} from "src/api/getLocationAddress";
 import {
   PositionDataType,
   PositionSate,
@@ -55,21 +56,27 @@ const InvalidMessage = styled.div`
 `;
 
 const LocationSettingPage = () => {
-  const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { mutateAsync: getAddress } = useMutation({
-    mutationFn: getLocationAddress,
-  });
-  const { mutateAsync: getAddressWithKeyword } = useMutation({
-    mutationFn: getLocationWithKeyword,
-  });
   const [position, setPosition] = useRecoilState(PositionSate);
   const [mapPosition, setMapPosition] = useState<PositionDataType>();
   const [isKeywordError, setIsKeywordError] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { location } = useGpsPosition();
+  const router = useRouter();
 
-  const clickGoBackButton = () => {
-    router.back();
-  };
+  const { data: addressData } = useQuery({
+    queryKey: [
+      API_GET_LOCATION_ADDRESS_KEY,
+      { latitude: position.coords.x, longitude: position.coords.y },
+    ],
+    queryFn: () =>
+      getLocationAddress({
+        latitude: position.coords.x,
+        longitude: position.coords.y,
+        kakaoRestApiKey: String(process.env.KAKAO_RESTAPI_KEY),
+      }),
+    enabled: !!position.coords.x,
+  });
+
   const clickPositionSettingButton = () => {
     if (!mapPosition) {
       return;
@@ -78,68 +85,57 @@ const LocationSettingPage = () => {
     router.push("/");
   };
 
-  // 저장된 키 이후, 사용자 엔터 입력 시, 카카오 서버 측에 해당 키워드 기반 위치 정보 요청.
+  // // 저장된 키 이후, 사용자 엔터 입력 시, 카카오 서버 측에 해당 키워드 기반 위치 정보 요청.
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      getAddressWithKeyword({
-        keyword: inputRef.current?.value || "",
-        kakaoRestApiKey: process.env.KAKAO_RESTAPI_KEY || "",
-      }).then((locationData) => {
-        // 예외 처리로 분기 처리. 검색 키워드가 카카오 db 정보에 있는 경우만 요청.
-        if (locationData.meta.total_count !== 0) {
-          setMapPosition({
-            coords: {
-              x: Number(locationData.documents[0].y),
-              y: Number(locationData.documents[0].x),
-            },
-            address: locationData.documents[0].address_name,
-          });
-          setIsKeywordError(false);
+      const places = new kakao.maps.services.Places();
+      places.keywordSearch(
+        inputRef.current?.value || "",
+        (data, status, _pagination) => {
+          const resultStatus = kakao.maps.services.Status;
+          if (status === resultStatus.ERROR) return;
+
+          if (status === resultStatus.ZERO_RESULT) {
+            setIsKeywordError(true);
+          }
+
+          if (status === resultStatus.OK) {
+            setIsKeywordError(false);
+            setMapPosition({
+              coords: {
+                x: Number(data[0].y),
+                y: Number(data[0].x),
+              },
+              address: data[0].address_name,
+            });
+          }
         }
-        // 카카오 정보에 없는 경우 사용자에게 주지 시키는 알러트!
-        else {
-          setIsKeywordError(true);
-        }
-      });
+      );
     }
   };
 
-  // 최초 멥 마운트 시,포지션 업데이트.
   useEffect(() => {
-    setMapPosition(position);
-  }, [position]);
+    if (!position.coords.x)
+      setPosition((prev) => ({
+        ...prev,
+        coords: {
+          x: location?.latitude || 0,
+          y: location?.longitude || 0,
+        },
+      }));
+  }, [location?.latitude, location?.longitude, position.coords.x, setPosition]);
 
-  // 맵 디바운싱 처리 추가.
-  useDebounce(
-    () => {
-      if (!mapPosition) {
-        return;
-      }
-      if (mapPosition.coords.x !== 0 && mapPosition.coords.y !== 0) {
-        getAddress({
-          latitude: mapPosition.coords.x || 0,
-          longitude: mapPosition.coords.y || 0,
-          kakaoRestApiKey: String(process.env.KAKAO_RESTAPI_KEY),
-        }).then((data) => {
-          if (!data.documents[0]) {
-            return;
-          }
-          const address = data.documents[0].address;
-          setMapPosition((prev) => {
-            if (!prev) {
-              return;
-            }
-            return {
-              ...prev,
-              address: `${address.region_1depth_name} ${address.region_2depth_name} ${address.region_3depth_name}`,
-            };
-          });
-        });
-      }
-    },
-    500,
-    [mapPosition?.coords.x, mapPosition?.coords.y]
-  );
+  // 최초 맵 마운트 시,포지션 업데이트.
+  useEffect(() => {
+    const address = addressData?.documents[0].address;
+    if (mapPosition?.address || !address) {
+      return;
+    }
+    setMapPosition({
+      address: `${address.region_1depth_name} ${address.region_2depth_name} ${address.region_3depth_name}`,
+      coords: position["coords"],
+    });
+  }, [addressData?.documents, mapPosition?.address, position]);
 
   return (
     <Container>
@@ -183,15 +179,32 @@ const LocationSettingPage = () => {
           }}
           maxLevel={5}
           minLevel={3}
-          onCenterChanged={(map) =>
-            setMapPosition((prev) => ({
-              ...prev,
-              coords: {
-                x: map.getCenter().getLat(),
-                y: map.getCenter().getLng(),
-              },
-            }))
-          }
+          onDragEnd={(map) => {
+            const geocoder = new kakao.maps.services.Geocoder();
+            const callback = (
+              result: Array<{
+                address: kakao.maps.services.Address;
+                road_address: kakao.maps.services.RoadAaddress | null;
+              }>,
+              status: kakao.maps.services.Status
+            ) => {
+              if (status === kakao.maps.services.Status.OK) {
+                setMapPosition({
+                  coords: {
+                    x: map.getCenter().getLat(),
+                    y: map.getCenter().getLng(),
+                  },
+                  address: `${result[0].address.region_1depth_name} ${result[0].address.region_2depth_name} ${result[0].address.region_3depth_name}`,
+                });
+              }
+            };
+
+            geocoder.coord2Address(
+              map.getCenter().getLng(),
+              map.getCenter().getLat(),
+              callback
+            );
+          }}
         >
           <MapMarker
             position={{

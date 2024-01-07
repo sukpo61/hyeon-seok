@@ -1,8 +1,8 @@
 import { DefaultHeader } from "@components/common/DefaultHeader";
 import { DefaultText } from "@components/common/DefaultText";
 import { HeaderBackButton } from "@components/common/HeaderBackButton";
-import { HotKeywordTagButton } from "@components/pages/search/HotKeywordTagButton";
-import { RecentKeywordButton } from "@components/pages/search/RecentKeywordButton";
+import { HotKeywordTagButton } from "@components/search/HotKeywordTagButton";
+import { RecentKeywordButton } from "@components/search/RecentKeywordButton";
 import styled from "@emotion/styled";
 import { useSearchKeyword } from "@hooks/useSearchKeyword";
 import { useRouter } from "next/router";

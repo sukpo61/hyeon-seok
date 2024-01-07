@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { CSSProperties, useMemo } from "react";
+import { CSSProperties, MouseEventHandler, useMemo } from "react";
 import { ColorToken } from "styles/Color";
 
 const TextContainer = styled.div``;
@@ -15,7 +15,7 @@ export interface TextProps {
   ellipsis?: boolean; // default = true
   preLine?: boolean;
   lineHeight?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 export const DefaultText = ({
@@ -23,7 +23,7 @@ export const DefaultText = ({
   text,
   fontFamily = "Google Sans",
   weight = 400,
-  lineHeight,
+  lineHeight = "1.1",
   color = ColorToken.text_primary,
   align,
   style,

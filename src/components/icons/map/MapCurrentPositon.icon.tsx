@@ -9,7 +9,7 @@ export const MapCurrentPositionIcon = () => (
     <circle opacity="0.3" cx="15" cy="15" r="15" fill="#F83838" />
     <g filter="url(#filter0_d_4053_32440)">
       <circle cx="15" cy="15" r="4" fill="#F83838" />
-      <circle cx="15" cy="15" r="4.75" stroke="white" stroke-width="1.5" />
+      <circle cx="15" cy="15" r="4.75" stroke="white" strokeWidth="1.5" />
     </g>
     <defs>
       <filter

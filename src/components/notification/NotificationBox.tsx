@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { FC } from "react";
 import { Color } from "styles/Color";
 
-interface NotifictaionBoxProps {
+interface NotificationBoxProps {
   title: string;
   body: string;
   time: string;
@@ -33,7 +33,7 @@ const TextSection = styled.section`
   width: 100%;
 `;
 
-export const NotificationBox: FC<NotifictaionBoxProps> = ({
+export const NotificationBox: FC<NotificationBoxProps> = ({
   title,
   body,
   time,
