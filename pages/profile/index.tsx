@@ -49,6 +49,7 @@ const Profile = () => {
       <BackgroundImage
         scrollY={y}
         src="/images/profile/profilebackground.jpg"
+        height={200}
       />
       <ProfileInfo />
       <ProfileTab />

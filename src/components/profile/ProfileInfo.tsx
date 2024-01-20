@@ -12,6 +12,7 @@ const Container = styled.div`
   width: 100%;
   flex-direction: column;
   padding-bottom: 20px;
+  background-color: white;
 `;
 
 const ProfileImgContainer = styled.div`
