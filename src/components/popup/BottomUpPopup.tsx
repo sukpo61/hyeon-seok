@@ -1,4 +1,4 @@
-import CloseIcon from "@components/icons/toast/Close.icon";
+import CloseIcon from "@components/icons/common/Close.icon";
 import styled from "@emotion/styled";
 import { Dispatch, ReactElement, SetStateAction } from "react";
 import { ColorToken } from "styles/Color";

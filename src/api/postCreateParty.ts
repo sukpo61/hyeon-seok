@@ -1,18 +1,18 @@
 import defaultRequest from "src/lib/axios/defaultRequest";
 
-interface postParticipateParameter {
+interface postPartyParticipationParameter {
   partyId: number;
-  leaderId?: number;
+  leaderId: number;
   status: string;
 }
 
-export const API_POST_PARTY_PARTICIPATION_KEY = "/api/party/participation";
+export const API_POST_PARTY_PARTICIPATION_KEY = "/api/party";
 
-const postParticipate = async (body: postParticipateParameter) => {
+const postCreateParty = async (body: any) => {
   return defaultRequest
     .post(API_POST_PARTY_PARTICIPATION_KEY, body)
     .then((response) => {
-      console.log("postParticipate:", response);
+      console.log("postCreateParty:", response);
       return response;
     })
     .catch((error) => {
@@ -20,4 +20,4 @@ const postParticipate = async (body: postParticipateParameter) => {
     });
 };
 
-export default postParticipate;
+export default postCreateParty;

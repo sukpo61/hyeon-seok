@@ -83,7 +83,7 @@ const PartyDetailBottomBar = ({
   return (
     <Container>
       <BottomBarContainer>
-        {isLeader ? (
+        {true ? (
           <HostPannelContainer>
             <IconContainer onClick={OpenConfirmPopup}>
               <DeleteIcon />

@@ -36,10 +36,11 @@ const PartyDetailContent = ({ y }: { y: number }) => {
   const participateParty = () => {
     postParticipateMutate.mutate({
       partyId: Number(id),
-      leaderId: data?.userId,
-      status: "ACCEPT",
+      status: "APPLY",
     });
   };
+
+  //CANCEL, APPLY
 
   const partyDetailDelete = () => {
     DeletePartyDetailMutate.mutate({ id });

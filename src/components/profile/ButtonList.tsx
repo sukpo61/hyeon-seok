@@ -1,9 +1,13 @@
 import styled from "@emotion/styled";
 import { DefaultButton } from "@components/common/DefaultButton";
 
-interface ToggleButtonProps {
-  partystate: string;
-  setPartystate: React.Dispatch<React.SetStateAction<string>>;
+interface ButtonListProps {
+  listinfo: {
+    text: string;
+    value: string;
+  }[];
+  state: string;
+  setState: (state: string) => void;
 }
 
 const Container = styled.div`
@@ -16,28 +20,17 @@ const Container = styled.div`
   z-index: 9;
 `;
 
-const ButtonList = [
-  {
-    text: "모집중",
-    value: "host",
-  },
-  {
-    text: "참가중",
-    value: "member",
-  },
-];
-
-const ToggleButton = ({ partystate, setPartystate }: ToggleButtonProps) => {
+const ButtonList = ({ listinfo, state, setState }: ButtonListProps) => {
   return (
     <Container>
-      {ButtonList.map(({ text, value }) => (
+      {listinfo.map(({ text, value }) => (
         <DefaultButton
           key={value}
           text={text}
           buttonType="toggle"
-          filled={partystate === value}
+          filled={state === value}
           onClick={() => {
-            setPartystate(value);
+            setState(value);
           }}
         />
       ))}
@@ -45,4 +38,4 @@ const ToggleButton = ({ partystate, setPartystate }: ToggleButtonProps) => {
   );
 };
 
-export default ToggleButton;
+export default ButtonList;

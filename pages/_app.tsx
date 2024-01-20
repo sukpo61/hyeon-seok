@@ -25,9 +25,9 @@ function MyApp({
       new QueryClient({
         defaultOptions: {
           queries: {
-            retry: false,
-            throwOnError: true,
-            staleTime: 60 * 3 * 1000,
+            // retry: false,
+            // throwOnError: true,
+            // staleTime: 60 * 3 * 1000,
           },
         },
       })
