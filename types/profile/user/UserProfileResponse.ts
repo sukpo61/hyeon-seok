@@ -1,5 +1,3 @@
-import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
-
 export interface UserProfileResponse {
   createDate: string;
   modifiedDate: string;
@@ -12,5 +10,4 @@ export interface UserProfileResponse {
   imgUrl: string;
   gender: string;
   role: string;
-  partyList: PartyDetailResponse[];
 }

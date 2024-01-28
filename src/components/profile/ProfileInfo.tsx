@@ -66,9 +66,8 @@ const userId = 11;
 
 const ProfileInfo = () => {
   const { data, isSuccess } = useQuery({
-    queryKey: [API_GET_PROFILE_KEY, { userId }],
-    queryFn: () => getProfile({ userId }),
-    enabled: !!userId,
+    queryKey: [API_GET_PROFILE_KEY],
+    queryFn: () => getProfile(),
   });
 
   if (isSuccess) {
