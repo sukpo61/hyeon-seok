@@ -4,7 +4,7 @@ import { HeaderBackButton } from "@components/common/HeaderBackButton";
 import { useScroll } from "react-use";
 import { useRef } from "react";
 import PartyDetailContent from "@components/partydetail/PartyDetailContent";
-import { useRouter } from "next/router";
+import QuerySuspenseErrorBoundary from "@components/hoc/QuerySuspenseErrorBoundary";
 
 const Container = styled.div`
   display: flex;
@@ -20,11 +20,12 @@ const Container = styled.div`
 const PartyDetail = () => {
   const scrollRef = useRef(null);
   const { y } = useScroll(scrollRef);
-
   return (
     <Container ref={scrollRef}>
       <DefaultHeader leftArea={<HeaderBackButton />} />
-      <PartyDetailContent y={y} />
+      <QuerySuspenseErrorBoundary>
+        <PartyDetailContent y={y} />
+      </QuerySuspenseErrorBoundary>
     </Container>
   );
 };

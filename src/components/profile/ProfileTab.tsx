@@ -1,11 +1,11 @@
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import PartySituation from "./PartySituation";
 import styled from "@emotion/styled";
-import PartyReview from "./PartyReview";
+import PartyRequestList from "./PartyRequestList";
 import { useState, SyntheticEvent } from "react";
+import QuerySuspenseErrorBoundary from "@components/hoc/QuerySuspenseErrorBoundary";
 
 const TabContainer = styled.div`
   position: sticky;
@@ -60,15 +60,19 @@ export default function ProfileTab() {
             aria-label="basic tabs example"
           >
             <Tab label="파티현황" {...a11yProps(0)} />
-            <Tab label="후기" {...a11yProps(1)} />
+            <Tab label="초대요청" {...a11yProps(1)} />
           </Tabs>
         </Box>
       </TabContainer>
       <CustomTabPanel value={value} index={0}>
-        <PartySituation />
+        <QuerySuspenseErrorBoundary>
+          <PartySituation />
+        </QuerySuspenseErrorBoundary>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <PartyReview />
+        <QuerySuspenseErrorBoundary>
+          <PartyRequestList />
+        </QuerySuspenseErrorBoundary>
       </CustomTabPanel>
     </Box>
   );

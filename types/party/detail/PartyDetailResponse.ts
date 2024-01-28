@@ -4,6 +4,8 @@ export interface PartyDetailResponse {
   isLeader: boolean;
   partyTitle: string;
   partyContent: string;
+  partyPlaceName: string;
+  category: string;
   address: string;
   longitude: number;
   latitude: number;
@@ -12,7 +14,7 @@ export interface PartyDetailResponse {
   age: string;
   deadline: string;
   partyTime: string;
-  totalParticipate: number;
+  totalParticipant: number;
   participate: number;
   menu: string;
   thumbnail: string;

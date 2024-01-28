@@ -6,14 +6,16 @@ import PersonIcon from "@components/icons/profile/Person.icon";
 import InfoIcon from "@components/icons/profile/Info.icon";
 import GenderIcon from "@components/icons/profile/Gender.icon";
 import { Fragment } from "react";
+import RestaurantIcon from "@components/icons/profile/Restaurant.icon";
 
 interface PartyBriefProps {
   partyTitle: string;
   hit: number;
-  totalParticipate: number;
+  totalParticipant: number;
   participate: number;
   gender: string;
   age: string;
+  category: string;
 }
 const Container = styled.div`
   display: flex;
@@ -60,7 +62,15 @@ const PartyConditionBox = styled.div`
 `;
 
 const PartyBrief = (data: PartyBriefProps) => {
-  const { partyTitle, hit, totalParticipate, participate, gender, age } = data;
+  const {
+    partyTitle,
+    hit,
+    totalParticipant,
+    participate,
+    gender,
+    age,
+    category,
+  } = data;
 
   const genderDataConvert = (gender: string) => {
     const genderMap: { [key: string]: string } = {
@@ -73,19 +83,30 @@ const PartyBrief = (data: PartyBriefProps) => {
 
   const ageDataConvert = (gender: string) => {
     const ageMap: { [key: string]: string } = {
-      2030: "20~30대",
-      3040: "30~40대",
-      40: "40대 이상",
-      all: "모든연령",
+      TWENTY: "20대",
+      THIRTY: "30대",
+      FOURTY: "40대 이상",
+      ALL: "모든연령",
     };
     return ageMap[gender] || "";
+  };
+
+  const categoryDataConvert = (category: string) => {
+    const categoryMap: { [key: string]: string } = {
+      KOREAN: "한식",
+      WESTERN: "양식",
+      JAPANESE: "일식",
+      CHINESE: "중식",
+      ETC: "기타",
+    };
+    return categoryMap[category] || "";
   };
 
   const PartyBriefData = [
     {
       id: "participant_count",
       icon: <PersonIcon />,
-      content: `${participate.toString()}/${totalParticipate.toString()}명`,
+      content: `${participate.toString()}/${totalParticipant.toString()}명`,
     },
     {
       id: "gender_data",
@@ -96,6 +117,11 @@ const PartyBrief = (data: PartyBriefProps) => {
       id: "age_data",
       icon: <InfoIcon />,
       content: ageDataConvert(age),
+    },
+    {
+      id: "category_data",
+      icon: <RestaurantIcon />,
+      content: categoryDataConvert(category),
     },
   ];
 

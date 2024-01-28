@@ -8,6 +8,7 @@ import { useScroll } from "react-use";
 import { useRef } from "react";
 import Link from "next/link";
 import BackgroundImage from "@components/common/BackgroundImage";
+import QuerySuspenseErrorBoundary from "@components/hoc/QuerySuspenseErrorBoundary";
 
 const Container = styled.div`
   display: flex;
@@ -49,8 +50,11 @@ const Profile = () => {
       <BackgroundImage
         scrollY={y}
         src="/images/profile/profilebackground.jpg"
+        height={200}
       />
-      <ProfileInfo />
+      <QuerySuspenseErrorBoundary>
+        <ProfileInfo />
+      </QuerySuspenseErrorBoundary>
       <ProfileTab />
     </Container>
   );

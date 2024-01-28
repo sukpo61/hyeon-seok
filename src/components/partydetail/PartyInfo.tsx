@@ -34,12 +34,14 @@ const PartyInfo = ({ data }: PartyInfoProps) => {
   const {
     partyTitle,
     partyContent,
+    partyPlaceName,
+    category,
     isLeader,
     gender,
     age,
     deadline,
     partyTime,
-    totalParticipate,
+    totalParticipant,
     participate,
     menu,
     hit,
@@ -50,8 +52,9 @@ const PartyInfo = ({ data }: PartyInfoProps) => {
 
   const partyBriefData = {
     partyTitle,
+    category,
     hit,
-    totalParticipate,
+    totalParticipant,
     participate,
     gender,
     age,
@@ -65,6 +68,7 @@ const PartyInfo = ({ data }: PartyInfoProps) => {
   };
 
   const partyMapData = {
+    partyPlaceName,
     address,
     longitude,
     latitude,

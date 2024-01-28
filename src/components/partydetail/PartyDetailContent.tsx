@@ -9,16 +9,17 @@ import PartyDetailBottomBar from "@components/partydetail/PartyDetailBottomBar";
 import postParticipate from "src/api/postParticipate";
 import { useMutation } from "@tanstack/react-query";
 import deletePartyDetail from "src/api/deletePartyDetail";
-import Loading from "@components/partydetail/Loading";
-import ErrorPage from "@components/partydetail/ErrorPage";
 
 const PartyDetailContent = ({ y }: { y: number }) => {
   const router = useRouter();
   const { id } = router.query as { id: string };
 
-  const { data, isSuccess, isError, error, isLoading } = useQuery({
+  const userId = 11;
+  // 로그인 기능 연결후 userid 받아올 예정
+
+  const { data, isSuccess } = useQuery({
     queryKey: [API_GET_PARTY_DETAIL_KEY, { id }],
-    queryFn: () => getPartyDetail({ id }),
+    queryFn: () => getPartyDetail({ id, userId: String(userId) }),
     enabled: !!id,
   });
 
@@ -36,22 +37,13 @@ const PartyDetailContent = ({ y }: { y: number }) => {
   const participateParty = () => {
     postParticipateMutate.mutate({
       partyId: Number(id),
-      leaderId: data?.userId,
-      status: "ACCEPT",
+      status: "APPLY",
     });
   };
 
   const partyDetailDelete = () => {
     DeletePartyDetailMutate.mutate({ id });
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <ErrorPage error={error} />;
-  }
 
   if (isSuccess) {
     return (
