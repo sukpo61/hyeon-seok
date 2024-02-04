@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useState } from "react";
 import PartyList from "./PartyList";
 import getPartyStatus from "src/api/getPartyStatus";
 import { API_GET_PARTY_STATUS_KEY } from "src/api/getPartyStatus";
 import { useQuery } from "@tanstack/react-query";
 import ButtonList from "./ButtonList";
+import { useRouter } from "next/router";
 
 const Container = styled.div`
   display: flex;
@@ -19,34 +19,40 @@ const PartyListContainer = styled.div`
 `;
 
 const PartySituation = () => {
-  const [partystate, setPartystate] = useState<string>("HOST");
+  const router = useRouter();
+  const role = router.query.role as string;
 
   const { data } = useQuery({
-    queryKey: [API_GET_PARTY_STATUS_KEY, { partystate }],
-    queryFn: () => getPartyStatus({ role: partystate }),
-    enabled: !!partystate,
+    queryKey: [API_GET_PARTY_STATUS_KEY, { role }],
+    queryFn: () => getPartyStatus({ role }),
+    enabled: !!role,
   });
 
   const buttonlistinfo = [
     {
-      text: "참가중",
-      value: "VOLUNTEER",
-    },
-    {
       text: "모집중",
       value: "HOST",
+    },
+    {
+      text: "참가중",
+      value: "VOLUNTEER",
     },
   ];
 
   const setButtonState = (state: string) => {
-    setPartystate(state);
+    router.push({
+      query: {
+        ...router.query,
+        role: state,
+      },
+    });
   };
 
   return (
     <Container>
       <ButtonList
         listinfo={buttonlistinfo}
-        state={partystate}
+        state={role}
         setState={setButtonState}
       />
       <PartyListContainer>

@@ -2,12 +2,14 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import { BottomIconProps } from "types/layout";
 import Link from "next/link";
-
 interface NavListProps {
   item: {
     title: string;
     href: string;
     icon: ({ selected }: BottomIconProps) => JSX.Element;
+    query?: {
+      [key: string]: string;
+    };
   };
 }
 
@@ -32,12 +34,12 @@ const TitleText = styled.span`
 `;
 
 const NavList = ({ item }: NavListProps) => {
-  const { title, href, icon } = item;
+  const { title, href, icon, query } = item;
   const router = useRouter();
   const selected = router.pathname === href;
 
   return (
-    <Link href={href}>
+    <Link href={{ pathname: href, query: query }}>
       <Container>
         {icon({ selected })}
         <TitleText>{title}</TitleText>

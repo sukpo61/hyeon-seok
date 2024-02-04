@@ -9,6 +9,8 @@ import { useRef } from "react";
 import Link from "next/link";
 import BackgroundImage from "@components/common/BackgroundImage";
 import QuerySuspenseErrorBoundary from "@components/hoc/QuerySuspenseErrorBoundary";
+import ProfileError from "@components/profile/ProfileError";
+import ProfileLoading from "@components/profile/ProfileLoading";
 
 const Container = styled.div`
   display: flex;
@@ -19,6 +21,12 @@ const Container = styled.div`
   width: 100%;
   max-width: 768px;
   overflow-y: scroll;
+`;
+const ProfileInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  width: 100%;
 `;
 
 const RightAreaContainer = styled.div`
@@ -52,9 +60,14 @@ const Profile = () => {
         src="/images/profile/profilebackground.jpg"
         height={200}
       />
-      <QuerySuspenseErrorBoundary>
-        <ProfileInfo />
-      </QuerySuspenseErrorBoundary>
+      <ProfileInfoContainer>
+        <QuerySuspenseErrorBoundary
+          errorFallback={ProfileError}
+          suspenseFallback={<ProfileLoading />}
+        >
+          <ProfileInfo />
+        </QuerySuspenseErrorBoundary>
+      </ProfileInfoContainer>
       <ProfileTab />
     </Container>
   );

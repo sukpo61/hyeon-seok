@@ -8,6 +8,8 @@ import InfoIcon from "@components/icons/profile/Info.icon";
 import { useQuery } from "@tanstack/react-query";
 import { API_GET_PROFILE_KEY } from "src/api/getProfile";
 import getProfile from "src/api/getProfile";
+import { PARTY_GENDER_LABEL } from "src/constants/options";
+import { labelDataConvert } from "@utils/labelDataConvert";
 
 const Container = styled.div`
   display: flex;
@@ -40,6 +42,7 @@ const MannerDegreeContainer = styled.div`
   gap: 16px;
   align-items: center;
 `;
+
 const UserInfo = styled.div`
   display: flex;
   flex-direction: row;
@@ -65,20 +68,12 @@ const userId = 11;
 // 로그인 기능 연결후 userid 받아올 예정
 
 const ProfileInfo = () => {
-  const { data, isSuccess } = useQuery({
+  const { data } = useQuery({
     queryKey: [API_GET_PROFILE_KEY],
     queryFn: () => getProfile(),
   });
 
-  if (isSuccess) {
-    const genderDataConvert = (gender: string) => {
-      const genderMap: { [key: string]: string } = {
-        MALE: "남성",
-        FEMALE: "여성",
-      };
-      return genderMap[gender] || "";
-    };
-
+  if (data) {
     const { gender, age, socialType, nickname, imgUrl } = data;
 
     return (
@@ -96,7 +91,10 @@ const ProfileInfo = () => {
           <ProfileDetail>
             <UserInfo>
               <GenderIcon />
-              <DefaultText text={genderDataConvert(gender)} size={16} />
+              <DefaultText
+                text={labelDataConvert(gender, PARTY_GENDER_LABEL)}
+                size={16}
+              />
               <InfoIcon />
               <DefaultText text={`${age}세`} size={16} />
             </UserInfo>

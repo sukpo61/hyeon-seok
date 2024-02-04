@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { DefaultText } from "@components/common/DefaultText";
+import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
 
-interface PartyMapProps {
-  partyPlaceName: string;
-  address: string;
-  longitude: number;
-  latitude: number;
-}
+type PartyMapProps = Pick<
+  PartyDetailResponse,
+  "partyPlaceName" | "address" | "longitude" | "latitude"
+>;
 
 const Container = styled.div`
   display: flex;

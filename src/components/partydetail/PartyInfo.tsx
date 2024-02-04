@@ -31,53 +31,34 @@ const PartyInfoContainer = styled.div`
 `;
 
 const PartyInfo = ({ data }: PartyInfoProps) => {
-  const {
-    partyTitle,
-    partyContent,
-    partyPlaceName,
-    category,
-    isLeader,
-    gender,
-    age,
-    deadline,
-    partyTime,
-    totalParticipant,
-    participate,
-    menu,
-    hit,
-    address,
-    longitude,
-    latitude,
-  } = data;
-
   const partyBriefData = {
-    partyTitle,
-    category,
-    hit,
-    totalParticipant,
-    participate,
-    gender,
-    age,
+    partyTitle: data.partyTitle,
+    category: data.category,
+    hit: data.hit,
+    totalParticipant: data.totalParticipant,
+    participate: data.participate,
+    gender: data.gender,
+    age: data.age,
   };
 
   const partyDetailData = {
-    deadline,
-    partyTime,
-    menu,
-    partyContent,
+    deadline: data.deadline,
+    partyTime: data.partyTime,
+    menu: data.menu,
+    partyContent: data.partyContent,
   };
 
   const partyMapData = {
-    partyPlaceName,
-    address,
-    longitude,
-    latitude,
+    partyPlaceName: data.partyPlaceName,
+    address: data.address,
+    longitude: data.longitude,
+    latitude: data.latitude,
   };
 
   return (
     <Container>
       <PartyInfoContainer>
-        {isLeader && <PartyHostInfo />}
+        {data.isLeader && <PartyHostInfo />}
         <PartyBrief {...partyBriefData} />
         <PartyDetail {...partyDetailData} />
         <PartyMap {...partyMapData} />

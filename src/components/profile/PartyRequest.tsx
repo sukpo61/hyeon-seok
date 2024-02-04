@@ -8,7 +8,7 @@ import { PartyJoinResponse } from "types/party/join/PartyJoinResponse";
 import Link from "next/link";
 
 interface PartyRequestProps {
-  type: string;
+  role: string;
   data: PartyJoinResponse;
   joinDecision: (id: number, nickname: string, status: boolean) => void;
 }
@@ -34,7 +34,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   flex-direction: row;
 `;
-const IconContainer = styled.div`
+const IconContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,10 +47,10 @@ const IconContainer = styled.div`
   }
 `;
 
-const PartyRequest = ({ type, data, joinDecision }: PartyRequestProps) => {
+const PartyRequest = ({ role, data, joinDecision }: PartyRequestProps) => {
   const { partyId, partyTitle, nickname } = data;
 
-  const isHost = type === "HOST";
+  const isHost = role === "HOST";
 
   const acceptRequset = () => {
     joinDecision(partyId, nickname, true);

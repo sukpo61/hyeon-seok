@@ -7,25 +7,34 @@ import InfoIcon from "@components/icons/profile/Info.icon";
 import GenderIcon from "@components/icons/profile/Gender.icon";
 import { Fragment } from "react";
 import RestaurantIcon from "@components/icons/profile/Restaurant.icon";
+import {
+  PARTY_AGE_LABEL,
+  PARTY_GENDER_LABEL,
+  PARTY_CATEGORY_LABEL,
+} from "src/constants/options";
+import { labelDataConvert } from "@utils/labelDataConvert";
+import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
 
-interface PartyBriefProps {
-  partyTitle: string;
-  hit: number;
-  totalParticipant: number;
-  participate: number;
-  gender: string;
-  age: string;
-  category: string;
-}
+type PartyBriefProps = Pick<
+  PartyDetailResponse,
+  | "partyTitle"
+  | "hit"
+  | "totalParticipant"
+  | "participate"
+  | "gender"
+  | "age"
+  | "category"
+>;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 20px 20px;
-  z-index: 99;
   background-color: white;
   border-radius: 12px;
 `;
+
 const PartyTitle = styled.div`
   width: 100%;
   display: flex;
@@ -72,56 +81,26 @@ const PartyBrief = (data: PartyBriefProps) => {
     category,
   } = data;
 
-  const genderDataConvert = (gender: string) => {
-    const genderMap: { [key: string]: string } = {
-      ALL: "모든성별",
-      MALE: "남성만",
-      FEMALE: "여성만",
-    };
-    return genderMap[gender] || "";
-  };
-
-  const ageDataConvert = (gender: string) => {
-    const ageMap: { [key: string]: string } = {
-      TWENTY: "20대",
-      THIRTY: "30대",
-      FOURTY: "40대 이상",
-      ALL: "모든연령",
-    };
-    return ageMap[gender] || "";
-  };
-
-  const categoryDataConvert = (category: string) => {
-    const categoryMap: { [key: string]: string } = {
-      KOREAN: "한식",
-      WESTERN: "양식",
-      JAPANESE: "일식",
-      CHINESE: "중식",
-      ETC: "기타",
-    };
-    return categoryMap[category] || "";
-  };
-
   const PartyBriefData = [
     {
       id: "participant_count",
       icon: <PersonIcon />,
-      content: `${participate.toString()}/${totalParticipant.toString()}명`,
+      content: `${String(participate)}/${String(totalParticipant)}명`,
     },
     {
       id: "gender_data",
       icon: <GenderIcon />,
-      content: genderDataConvert(gender),
+      content: labelDataConvert(gender, PARTY_GENDER_LABEL),
     },
     {
       id: "age_data",
       icon: <InfoIcon />,
-      content: ageDataConvert(age),
+      content: labelDataConvert(age, PARTY_AGE_LABEL),
     },
     {
       id: "category_data",
       icon: <RestaurantIcon />,
-      content: categoryDataConvert(category),
+      content: labelDataConvert(category, PARTY_CATEGORY_LABEL),
     },
   ];
 

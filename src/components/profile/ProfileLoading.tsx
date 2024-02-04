@@ -7,10 +7,9 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100%;
 `;
 
-const Loading = () => {
+const ProfileLoading = () => {
   return (
     <Container>
       <CircularProgress />
@@ -18,4 +17,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default ProfileLoading;

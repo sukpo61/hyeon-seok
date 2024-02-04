@@ -2,13 +2,12 @@ import styled from "@emotion/styled";
 import { DefaultText } from "@components/common/DefaultText";
 import Divider from "@mui/material/Divider";
 import dayjs from "dayjs";
+import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
 
-interface PartyDetailProps {
-  deadline: string;
-  partyTime: string;
-  menu: string;
-  partyContent: string;
-}
+type PartyDetailProps = Pick<
+  PartyDetailResponse,
+  "deadline" | "partyTime" | "menu" | "partyContent"
+>;
 
 const Container = styled.div`
   display: flex;

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { ColorToken } from "styles/Color";
 import { DefaultText } from "@components/common/DefaultText";
 import Image from "next/image";
 import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
@@ -62,11 +61,7 @@ const PartyList = ({ data }: PartyListProps) => {
         />
         <PartyDetail>
           <Title>
-            <DefaultText
-              text={partyTitle}
-              size={16}
-              style={{ fontWeight: "500" }}
-            />
+            <DefaultText text={partyTitle} size={16} weight={500} />
           </Title>
           <Address>
             <DefaultText text={address} size={14} color="#536471" />

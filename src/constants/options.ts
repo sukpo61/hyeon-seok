@@ -4,16 +4,16 @@ export const PARTY_AGE_LABEL = [
     value: "ALL",
   },
   {
-    name: "2030",
-    value: "20대 ~ 30대",
+    name: "20대",
+    value: "TWENTY",
   },
   {
-    name: "3040",
-    value: "30대 ~ 40대",
+    name: "30대",
+    value: "THIRTY",
   },
   {
-    name: "40",
-    value: "40대 ~",
+    name: "40대",
+    value: "FITTY",
   },
 ];
 
@@ -35,42 +35,38 @@ export const PARTY_GENDER_LABEL = [
 export const PARTY_CATEGORY_LABEL = [
   {
     name: "한식",
-    value: "한식",
+    value: "KOREAN",
   },
   {
     name: "양식",
-    value: "양식",
+    value: "WESTERN",
   },
   {
     name: "일식",
-    value: "일식",
+    value: "JAPANESE",
   },
   {
     name: "중식",
-    value: "중식",
+    value: "CHINESE",
   },
   {
     name: "기타",
-    value: "기타",
+    value: "ETC",
   },
 ];
 
 export const PARTY_STATUS_LABEL = [
   {
     name: "모집중",
-    value: "모집중",
+    value: "RECRUIT",
   },
   {
     name: "모집 중단",
-    value: "모집 중단",
+    value: "RECRUIT_FINISH",
   },
 ];
 
 export const PARTY_TOTAL_LABEL = [
-  {
-    name: 1,
-    value: 1,
-  },
   {
     name: 2,
     value: 2,
