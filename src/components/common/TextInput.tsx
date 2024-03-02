@@ -36,6 +36,7 @@ interface InputProps {
   register?: UseFormRegisterReturn<string>;
   value?: string;
   name?: string;
+  defaultValue?: string;
   placeholder?: string;
   errorMessage?: string;
   maxLength?: number;
@@ -51,6 +52,7 @@ const TextInput = ({
   value,
   name,
   placeholder,
+  defaultValue,
   errorMessage,
   maxLength,
   onChange,
@@ -80,6 +82,7 @@ const TextInput = ({
         onKeyDown={onKeyDown}
         isBorderRadius={isBorderRadius}
         maxLength={maxLength}
+        defaultValue={defaultValue}
         {...register}
       />
       {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
