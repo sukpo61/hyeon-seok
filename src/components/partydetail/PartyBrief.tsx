@@ -12,7 +12,6 @@ import {
   PARTY_GENDER_LABEL,
   PARTY_CATEGORY_LABEL,
 } from "src/constants/options";
-import { labelDataConvert } from "@utils/labelDataConvert";
 import { PartyDetailResponse } from "types/party/detail/PartyDetailResponse";
 
 type PartyBriefProps = Pick<
@@ -90,17 +89,21 @@ const PartyBrief = (data: PartyBriefProps) => {
     {
       id: "gender_data",
       icon: <GenderIcon />,
-      content: labelDataConvert(gender, PARTY_GENDER_LABEL),
+      content: `${
+        PARTY_GENDER_LABEL.find((item) => item.value === gender)?.name
+      }`,
     },
     {
       id: "age_data",
       icon: <InfoIcon />,
-      content: labelDataConvert(age, PARTY_AGE_LABEL),
+      content: `${PARTY_AGE_LABEL.find((item) => item.value === age)?.name}`,
     },
     {
       id: "category_data",
       icon: <RestaurantIcon />,
-      content: labelDataConvert(category, PARTY_CATEGORY_LABEL),
+      content: `${
+        PARTY_CATEGORY_LABEL.find((item) => item.value === category)?.name
+      }`,
     },
   ];
 

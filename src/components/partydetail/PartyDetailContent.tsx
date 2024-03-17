@@ -25,16 +25,20 @@ const PartyDetailContent = ({ y }: { y: number }) => {
 
   const postParticipateMutate = useMutation({
     mutationFn: postParticipate,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_GET_PARTY_DETAIL_KEY, { id }],
+      });
+      router.push("/");
+    },
   });
 
   const DeletePartyDetailMutate = useMutation({
     mutationFn: deletePartyDetail,
     onSuccess: () => {
-      [API_GET_MAIN_PAGE, API_GET_PARTY_DETAIL_KEY].map((key) =>
-        queryClient.invalidateQueries({
-          queryKey: [key],
-        })
-      );
+      queryClient.invalidateQueries({
+        queryKey: [API_GET_PARTY_DETAIL_KEY, { id }],
+      });
       router.push("/");
     },
   });

@@ -73,43 +73,45 @@ const ProfileInfo = () => {
     queryFn: () => getProfile(),
   });
 
-  if (data) {
-    const { gender, age, socialType, nickname, imgUrl } = data;
-
-    return (
-      <Container>
-        <ProfileDetailContainer>
-          <ProfileImgContainer>
-            <Image
-              src={imgUrl || "/images/profile/profile.png"}
-              width={128}
-              height={128}
-              style={{ borderRadius: "50%" }}
-              alt={"profile-image"}
-            />
-          </ProfileImgContainer>
-          <ProfileDetail>
-            <UserInfo>
-              <GenderIcon />
-              <DefaultText
-                text={labelDataConvert(gender, PARTY_GENDER_LABEL)}
-                size={16}
-              />
-              <InfoIcon />
-              <DefaultText text={`${age}세`} size={16} />
-            </UserInfo>
-            <Name>
-              <DefaultText text={nickname} size={32} />
-            </Name>
-            <MannerDegreeContainer>
-              <Progressbar value={30} /> {30}°C
-              {/* 매너온도는 후기기능에 포함되어 보류 */}
-            </MannerDegreeContainer>
-          </ProfileDetail>
-        </ProfileDetailContainer>
-      </Container>
-    );
+  if (!data) {
+    return;
   }
+
+  const { gender, age, socialType, nickname, imgUrl } = data;
+
+  return (
+    <Container>
+      <ProfileDetailContainer>
+        <ProfileImgContainer>
+          <Image
+            src={imgUrl || "/images/profile/profile.png"}
+            width={128}
+            height={128}
+            style={{ borderRadius: "50%" }}
+            alt={"profile-image"}
+          />
+        </ProfileImgContainer>
+        <ProfileDetail>
+          <UserInfo>
+            <GenderIcon />
+            <DefaultText
+              text={labelDataConvert(gender, PARTY_GENDER_LABEL)}
+              size={16}
+            />
+            <InfoIcon />
+            <DefaultText text={`${age}세`} size={16} />
+          </UserInfo>
+          <Name>
+            <DefaultText text={nickname} size={32} />
+          </Name>
+          <MannerDegreeContainer>
+            <Progressbar value={30} /> {30}°C
+            {/* 매너온도는 후기기능에 포함되어 보류 */}
+          </MannerDegreeContainer>
+        </ProfileDetail>
+      </ProfileDetailContainer>
+    </Container>
+  );
 };
 
 export default ProfileInfo;

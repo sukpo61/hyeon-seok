@@ -35,7 +35,7 @@ const PartyRequestList = () => {
     mutationFn: postPartyDecision,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [API_GET_PARTY_JOIN_KEY],
+        queryKey: [API_GET_PARTY_JOIN_KEY, { role }],
       });
     },
   });
@@ -44,7 +44,7 @@ const PartyRequestList = () => {
     mutationFn: postParticipate,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [API_GET_PARTY_JOIN_KEY],
+        queryKey: [API_GET_PARTY_JOIN_KEY, { role }],
       });
     },
   });
@@ -75,7 +75,7 @@ const PartyRequestList = () => {
   ];
 
   const setButtonState = (state: string) => {
-    router.push({
+    router.replace({
       query: {
         ...router.query,
         role: state,

@@ -69,8 +69,8 @@ export default function ProfileTab() {
           </Tabs>
         </Box>
       </TabContainer>
-      {categorylist.map(({ component }, index) => (
-        <ProfileTabPanel value={value} index={index}>
+      {categorylist.map(({ id, component }, index) => (
+        <ProfileTabPanel key={id} value={value} index={index}>
           {component}
         </ProfileTabPanel>
       ))}
