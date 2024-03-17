@@ -38,6 +38,7 @@ export const SearchResult: FC<SearchResultProps> = ({ keyword }) => {
       }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage?.pageInfo?.lastPartyId,
+    staleTime: 0,
   });
 
   const onClickPartyCard = (id: number) => {
