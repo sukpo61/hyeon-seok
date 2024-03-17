@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 
 interface ProfileEditForm {
+  imgFile: FileList;
   nickname: string;
 }
 
@@ -59,19 +60,16 @@ const Profile = () => {
   const queryClient = useQueryClient();
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const [localImgUrl, setLocalImgUrl] = useState<string>();
-  const [localImgFile, setLocalImgFile] = useState<File>();
+  const [localImgUrl, setLocalImgUrl] = useState<string>(
+    "/images/profile/profile.png"
+  );
 
   const { data } = useQuery({
     queryKey: [API_GET_PROFILE_KEY],
     queryFn: () => getProfile(),
   });
 
-  const { register, handleSubmit } = useForm<ProfileEditForm>({
-    defaultValues: {
-      nickname: data?.nickname,
-    },
-  });
+  const { register, handleSubmit } = useForm<ProfileEditForm>();
 
   const { mutate: patchProfileMutate } = useMutation({
     mutationFn: patchProfile,
@@ -90,7 +88,6 @@ const Profile = () => {
   const handleChangeThumbnail = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const file = event.target.files?.[0];
-    setLocalImgFile(file);
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -106,9 +103,9 @@ const Profile = () => {
   };
 
   const onSubmitPartyForm = async (formData: ProfileEditForm) => {
-    const { nickname } = formData;
-    if (localImgFile) {
-      const uploadResult = await postUploadImageMutate(localImgFile);
+    const { nickname, imgFile } = formData;
+    if (imgFile) {
+      const uploadResult = await postUploadImageMutate(imgFile[0]);
       if (uploadResult.imgUrl) {
         patchProfileMutate({ imgUrl: uploadResult.imgUrl, nickname });
       }
@@ -138,17 +135,18 @@ const Profile = () => {
             <Image
               width={200}
               height={200}
-              src={localImgUrl || data.imgUrl || "/images/profile/profile.png"}
+              src={data.imgUrl || localImgUrl}
               style={{ borderRadius: "50%", objectFit: "cover" }}
               alt="profile"
             />
             <input
-              ref={inputFileRef}
               id="profile-tumbnail-input"
-              name="image"
               type="file"
               hidden
-              onChange={handleChangeThumbnail}
+              {...register("imgFile", {
+                onChange: handleChangeThumbnail,
+              })}
+              ref={inputFileRef}
             />
           </ImageContainer>
           <TextInput
