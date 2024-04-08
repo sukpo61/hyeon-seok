@@ -5,7 +5,6 @@ import BackIcon from "@components/icons/common/Back.icon";
 import Progressbar from "@components/common/ProgressBar";
 import { DefaultButton } from "@components/common/DefaultButton";
 import { useRouter } from "next/router";
-
 import GenderSection from "@components/signup/GenderSection";
 import BirthDaySection from "@components/signup/BirthdaySection";
 import NickNameSection from "@components/signup/NicknameSection";
@@ -120,6 +119,7 @@ const SignUpPage = () => {
         const accessToken = data.headers["authorization"];
         const refreshToken = data.headers["authorization-refresh"];
         defaultRequest.defaults.headers.common["Authorization"] = accessToken;
+        await setCookie("accessToken", accessToken);
         await setCookie("refreshToken", refreshToken);
         router.push("/");
       }
