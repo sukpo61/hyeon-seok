@@ -11,6 +11,7 @@ import Modal from "src/components/common/Modal";
 import "../styles/globals.css";
 import { NextPageWithLayout } from "../types/layout";
 import Script from "next/script";
+import { NotificationProvider } from "@components/notification/NotificationProvider";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -34,13 +35,16 @@ function MyApp({
         },
       })
   );
+
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <MantineProvider>
-          <Modal />
-          {getLayout(<Component {...pageProps} />)}
-          <ToastProvider />
+          <NotificationProvider>
+            <Modal />
+            {getLayout(<Component {...pageProps} />)}
+            <ToastProvider />
+          </NotificationProvider>
         </MantineProvider>
       </RecoilRoot>
       <ReactQueryDevtools buttonPosition="bottom-left" />

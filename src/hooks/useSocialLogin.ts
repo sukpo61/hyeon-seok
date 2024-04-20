@@ -46,7 +46,6 @@ const useSocialLogin = () => {
               const refreshToken = data.headers["authorization-refresh"];
               defaultRequest.defaults.headers.common["Authorization"] =
                 accessToken;
-              setCookie("accessToken", accessToken);
               setCookie("refreshToken", refreshToken);
               push("/");
             }
@@ -69,7 +68,6 @@ const useSocialLogin = () => {
               const refreshToken = data.headers["authorization-refresh"];
               defaultRequest.defaults.headers.common["Authorization"] =
                 accessToken;
-              setCookie("accessToken", accessToken);
               setCookie("refreshToken", refreshToken);
               push("/");
             }

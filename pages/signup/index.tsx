@@ -119,7 +119,6 @@ const SignUpPage = () => {
         const accessToken = data.headers["authorization"];
         const refreshToken = data.headers["authorization-refresh"];
         defaultRequest.defaults.headers.common["Authorization"] = accessToken;
-        await setCookie("accessToken", accessToken);
         await setCookie("refreshToken", refreshToken);
         router.push("/");
       }
