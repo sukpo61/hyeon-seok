@@ -6,4 +6,6 @@ export interface NotificationResponse {
   type: string;
   createdAt: string;
   lastEventId: string;
+  hostId?: string;
+  partyId?: string;
 }
