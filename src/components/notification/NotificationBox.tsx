@@ -3,9 +3,12 @@ import { MainIcon } from "@components/icons/common/Main.icon";
 import styled from "@emotion/styled";
 import { FC } from "react";
 import { NotificationResponse } from "types/notification/NotificationResponse";
-import dayjs from "dayjs";
 import Link from "next/link";
 import { ColorToken } from "styles/Color";
+
+interface NotificationBoxProps {
+  data: NotificationResponse;
+}
 
 const Container = styled(Link)`
   width: 100%;
@@ -40,7 +43,7 @@ const TextInfoSection = styled.section`
   width: 100%;
 `;
 
-export const NotificationBox: FC<NotificationResponse> = (data) => {
+export const NotificationBox: FC<NotificationBoxProps> = ({ data }) => {
   const { title, content, name, type, createdAt, hostId, partyId } = data;
 
   const NotificationLink = (type: string) => {
@@ -51,7 +54,7 @@ export const NotificationBox: FC<NotificationResponse> = (data) => {
         return `/partydetail/${partyId}`;
       case "RECRUIT_FINISH":
         return `/partydetail/${partyId}`;
-      case " REVIEW":
+      case "REVIEW":
         return `/review/${hostId}/add`;
       default:
         return ``;
@@ -68,10 +71,7 @@ export const NotificationBox: FC<NotificationResponse> = (data) => {
         <TextInfoSection>
           <DefaultText text={title} size={12} />·
           <DefaultText text={name} size={12} />·
-          <DefaultText
-            text={`${dayjs(createdAt).format("YYYY.MM.MM. HH:MM")}`}
-            size={12}
-          />
+          <DefaultText text={createdAt} size={12} />
         </TextInfoSection>
       </TextSection>
     </Container>

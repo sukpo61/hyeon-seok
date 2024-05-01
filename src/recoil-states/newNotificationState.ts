@@ -1,13 +1,17 @@
 import { atom } from "recoil";
-import { recoilPersist } from "recoil-persist";
-import { sessionStorage } from "./recoilPersistStorage";
+import { NotificationResponse } from "types/notification/NotificationResponse";
+import { selector } from "recoil";
 
-const { persistAtom } = recoilPersist({
-  key: "newnotification",
-  storage: sessionStorage,
-});
-export const newNotificationRecoil = atom<number>({
+export const newNotificationRecoil = atom<NotificationResponse[]>({
   key: `newnotification`,
-  default: 0,
-  effects_UNSTABLE: [persistAtom],
+  default: [],
+});
+
+export const newNotificationCountRecoil = selector({
+  key: "newnotificationcount",
+  get: ({ get }) => {
+    const newnotification = get(newNotificationRecoil);
+    const count = newnotification.length;
+    return count;
+  },
 });

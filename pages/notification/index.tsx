@@ -3,25 +3,19 @@ import { DefaultText } from "@components/common/DefaultText";
 import { HeaderBackButton } from "@components/common/HeaderBackButton";
 import styled from "@emotion/styled";
 import { Color } from "styles/Color";
-import useNotification from "@hooks/useNotification";
+import { newNotificationRecoil } from "src/recoil-states/newNotificationState";
 import { NotificationBox } from "@components/notification/NotificationBox";
-import { DefaultButton } from "@components/common/DefaultButton";
+import { useRecoilValue } from "recoil";
+import { useRouter } from "next/router";
+import { getCookie } from "cookies-next";
+import { ObserverTrigger } from "@components/hoc/ObserverTrigger";
+import { useState, useEffect, useCallback } from "react";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-`;
-const ResetButtonContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 75px;
-  justify-content: center;
-  position: absolute;
-  position: fixed;
-  bottom: 0;
-  background-color: white;
-  padding: 10px;
+  padding-top: 40px;
 `;
 const NotificationList = styled.div`
   display: flex;
@@ -37,8 +31,31 @@ const NotificationList = styled.div`
   height: 100%;
 `;
 
+const OFFSET = 15;
+
 const NotificationPage = () => {
-  const { notifications, resetNotification } = useNotification(true);
+  const notifications = useRecoilValue(newNotificationRecoil);
+  const [visibleNotifications, setVisibleNotifications] = useState(
+    notifications.slice(0, OFFSET)
+  );
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+
+  const onObserve = useCallback(() => {
+    if (notifications.length > OFFSET * page) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (!getCookie("refreshToken")) {
+      router.replace("/sign/up");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    setVisibleNotifications(notifications.slice(0, OFFSET * page));
+  }, [notifications, page]);
 
   return (
     <Container>
@@ -47,19 +64,12 @@ const NotificationPage = () => {
         centerArea={<DefaultText text="알림 내역" size={20} weight={700} />}
       />
       <NotificationList>
-        {notifications?.map((data) => (
-          <NotificationBox key={data.id} {...data}></NotificationBox>
-        ))}
+        <ObserverTrigger onObserve={onObserve} observerMinHeight={"30px"}>
+          {visibleNotifications?.map((data) => (
+            <NotificationBox key={data.id} data={data} />
+          ))}
+        </ObserverTrigger>
       </NotificationList>
-      <ResetButtonContainer>
-        <DefaultButton
-          text={"모두지우기"}
-          style={{
-            width: "60%",
-          }}
-          onClick={resetNotification}
-        />
-      </ResetButtonContainer>
     </Container>
   );
 };
