@@ -9,7 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { ObserverTrigger } from '@components/hoc/ObserverTrigger';
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
-import nookies from 'nookies';
+import cookie from 'cookie';
 
 const Container = styled.div`
     display: flex;
@@ -31,15 +31,15 @@ const NotificationList = styled.div`
     height: 100%;
 `;
 
-const OFFSET = 15;
+const limit = 15;
 
 const NotificationPage = () => {
     const notifications = useRecoilValue(newNotificationRecoil);
-    const [renderedCount, setRenderedCount] = useState(OFFSET);
+    const [offset, setOffset] = useState(limit);
 
     const onObserve = () => {
-        if (notifications.length > renderedCount) {
-            setRenderedCount((prevCount) => prevCount + OFFSET);
+        if (notifications.length > offset) {
+            setOffset((prevOffset) => prevOffset + limit);
         }
     };
 
@@ -51,7 +51,7 @@ const NotificationPage = () => {
             />
             <NotificationList>
                 <ObserverTrigger onObserve={onObserve} observerMinHeight={'30px'}>
-                    {notifications.slice(0, renderedCount).map((data) => (
+                    {notifications.slice(0, offset).map((data) => (
                         <NotificationBox key={data.id} data={data} />
                     ))}
                 </ObserverTrigger>
@@ -61,7 +61,9 @@ const NotificationPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const cookies = nookies.get(context);
+    const { req } = context;
+    const cookies = req.headers.cookie ? cookie.parse(req.headers.cookie) : {};
+
     const refreshToken = cookies.refreshToken;
 
     if (!refreshToken) {
