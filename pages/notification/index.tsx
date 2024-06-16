@@ -62,9 +62,8 @@ const NotificationPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { req } = context;
-    const cookies = req.headers.cookie ? cookie.parse(req.headers.cookie) : {};
 
-    const refreshToken = cookies.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
         return {
