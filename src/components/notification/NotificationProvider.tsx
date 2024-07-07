@@ -4,7 +4,6 @@ import { useSetRecoilState } from 'recoil';
 import { newNotificationRecoil } from 'src/recoil-states/newNotificationState';
 import defaultRequest from 'src/lib/axios/defaultRequest';
 import { getCookie } from 'cookies-next';
-import { useState } from 'react';
 
 interface NotificationProviderProps {
     children: ReactNode;
@@ -12,17 +11,21 @@ interface NotificationProviderProps {
 
 export const NotificationProvider: FC<NotificationProviderProps> = ({ children }) => {
     const setNotifications = useSetRecoilState(newNotificationRecoil);
-    const [token, setToken] = useState<string>('');
     const refreshToken = getCookie('refreshToken');
 
     const getAccessToken = async () => {
-        const response = await defaultRequest.get('/oauth2/renew-token', {
-            headers: {
-                'Authorization-Refresh': refreshToken,
-            },
-        });
-        const accessToken = response.headers['authorization'];
-        setToken(accessToken);
+        try {
+            const response = await defaultRequest.get('/oauth2/renew-token', {
+                headers: {
+                    'Authorization-Refresh': refreshToken,
+                },
+            });
+            const accessToken = response.headers['authorization'];
+            return accessToken;
+        } catch (error) {
+            console.error('토큰 갱신 실패:', error);
+            return Promise.reject(error);
+        }
     };
 
     const createSSE = async (token: string) => {
@@ -54,19 +57,30 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
         };
 
         SSE.onerror = async (error) => {
-            // 에러발생시 토큰 요청
             if (error.status === 401) {
-                await getAccessToken();
+                SSE.close();
+                await initializeSSE();
             }
+            return Promise.reject(error);
         };
     };
 
-    useEffect(() => {
-        // 토큰 갱신시 재연결, 로그인시만 연결
-        if (refreshToken) {
-            createSSE(token);
+    const initializeSSE = async () => {
+        if (!refreshToken) {
+            console.error('리프레시 토큰이 없습니다');
+            return;
         }
-    }, [token]);
+        try {
+            const token = await getAccessToken();
+            await createSSE(token);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    };
+
+    useEffect(() => {
+        initializeSSE();
+    }, [refreshToken]);
 
     return <>{children}</>;
 };
