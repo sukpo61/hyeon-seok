@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect, useRef } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import { useSetRecoilState } from 'recoil';
 import { newNotificationRecoil } from 'src/recoil-states/newNotificationState';
@@ -12,6 +12,7 @@ interface NotificationProviderProps {
 export const NotificationProvider: FC<NotificationProviderProps> = ({ children }) => {
     const setNotifications = useSetRecoilState(newNotificationRecoil);
     const refreshToken = getCookie('refreshToken');
+    const sseRef = useRef<EventSourcePolyfill | null>(null);
 
     const getAccessToken = async () => {
         try {
@@ -63,6 +64,8 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
             }
             return Promise.reject(error);
         };
+
+        sseRef.current = SSE;
     };
 
     const initializeSSE = async () => {
@@ -80,6 +83,12 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
 
     useEffect(() => {
         initializeSSE();
+
+        return () => {
+            if (sseRef.current) {
+                sseRef.current.close();
+            }
+        };
     }, [refreshToken]);
 
     return <>{children}</>;
